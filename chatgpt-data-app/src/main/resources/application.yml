@@ -1,0 +1,24 @@
+server:
+  port: 8090
+spring:
+  config:
+    name: chatgpt-data
+  profiles:
+    active: dev
+
+# 应用配置
+app:
+  config:
+    # 跨域，开发阶段可以设置为 * 不限制
+    cross-origin: '*'
+
+# ChatGLM SDK Config
+chatglm:
+  sdk:
+    config:
+      # 状态；true = 开启、false 关闭
+      enabled: true
+      # 官网地址
+      api-host: https://open.bigmodel.cn/
+      # 官网申请 https://open.bigmodel.cn/usercenter/apikeys
+      api-secret-key: 02e6069e17a6d74784a626e7691d92cf.95jVHeBdc3k591e9
