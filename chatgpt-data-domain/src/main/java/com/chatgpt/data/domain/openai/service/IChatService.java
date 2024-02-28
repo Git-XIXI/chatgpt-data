@@ -8,5 +8,5 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
  * @date 2024/1/25 23:19
  */
 public interface IChatService {
-    ResponseBodyEmitter completions(ChatProcessAggregate chatProcessAggregate);
+    ResponseBodyEmitter completions(ResponseBodyEmitter emitter, ChatProcessAggregate chatProcess);
 }

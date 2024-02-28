@@ -1,5 +1,5 @@
 server:
-  port: 8090
+  port: 8080
 spring:
   config:
     name: chatgpt-data
@@ -11,6 +11,16 @@ app:
   config:
     # 跨域，开发阶段可以设置为 * 不限制
     cross-origin: '*'
+
+# 微信公众号配置信息
+# originalid：原始ID
+# appid：个人AppID
+# token：开通接口服务自定义设置
+wx:
+  config:
+    originalid: gh_d2218bf190e7
+    appid: wx075b27b863cf8caa
+    token: cjcxixi
 
 # ChatGLM SDK Config
 chatglm:

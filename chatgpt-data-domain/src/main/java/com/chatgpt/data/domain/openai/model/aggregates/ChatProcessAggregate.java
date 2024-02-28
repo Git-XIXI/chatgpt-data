@@ -25,12 +25,12 @@ public class ChatProcessAggregate {
      */
     private String token;
     /**
-     * 默认模型
+     * 模型
      */
-//    @Builder.Default
-//    private Model model = Model.GLM_3_5_TURBO;
     private Model model;
-    /** 问题描述 */
+    /**
+     * 问题描述
+     */
     private List<MessageEntity> messages;
 
 
