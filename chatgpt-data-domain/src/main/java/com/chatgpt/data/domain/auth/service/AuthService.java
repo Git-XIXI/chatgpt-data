@@ -3,6 +3,7 @@ package com.chatgpt.data.domain.auth.service;
 import com.chatgpt.data.domain.auth.model.entity.AuthStateEntity;
 import com.chatgpt.data.domain.auth.model.valobj.AuthTypeVO;
 import com.google.common.cache.Cache;
+import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -48,5 +49,11 @@ public class AuthService extends AbstractAuthService {
     @Override
     public boolean checkToken(String token) {
         return isVerify(token);
+    }
+
+    @Override
+    public String getOpenId(String token) {
+        Claims claims = decode(token);
+        return claims.get("openId").toString();
     }
 }

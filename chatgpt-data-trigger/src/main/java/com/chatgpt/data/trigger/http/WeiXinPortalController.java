@@ -7,7 +7,6 @@ import com.chatgpt.data.domain.weixin.service.IWeiXinValidateService;
 import com.chatgpt.data.types.weixin.XmlUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -23,8 +22,6 @@ import java.util.Date;
 @RequestMapping("/api/wx/portal/{appid}")
 public class WeiXinPortalController {
 
-    @Value("${wx.config.originalid}")
-    private String originalId;
     @Resource
     private IWeiXinValidateService weiXinValidateService;
     @Resource
@@ -38,7 +35,7 @@ public class WeiXinPortalController {
      * @param timestamp 微信发来的时间戳
      * @param nonce     微信发来的随机字符串
      * @param echostr   微信发来的验证字符串
-     * @return
+     * @return String
      */
     @GetMapping(produces = "text/plain;charset=utf-8")
     public String validate(@PathVariable String appid,
@@ -51,7 +48,8 @@ public class WeiXinPortalController {
             if (StringUtils.isAnyBlank(signature, timestamp, nonce, echostr)) {
                 throw new IllegalArgumentException("请求参数非法");
             }
-            boolean check = weiXinValidateService.checkSign(signature, timestamp, nonce);            log.info("微信公众号验签信息{}完成 check:{}", appid, check);
+            boolean check = weiXinValidateService.checkSign(signature, timestamp, nonce);
+            log.info("微信公众号验签信息{}完成 check:{}", appid, check);
             if (!check) {
                 return null;
             }

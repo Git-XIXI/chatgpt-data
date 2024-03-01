@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.chatgpt.data.domain.auth.model.entity.AuthStateEntity;
 import com.chatgpt.data.domain.auth.model.valobj.AuthTypeVO;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -94,7 +95,19 @@ public abstract class AbstractAuthService implements IAuthService {
 
     }
 
+    // 解析jwtToken，传入jwtToken生成对应的username和password等字段。Claim是一个map
+    // 也就是拿到荷载部分所有的键值对
+    protected Claims decode(String jwtToken) {
+        // 得到 DefaJwtParser
+        return Jwts.parser()
+                // 设置签名的密钥
+                .setSigningKey(base64EncodeSecretKey)
+                .parseClaimsJws(jwtToken)
+                .getBody();
+    }
 
+
+    // 判断jwtToken是否合法
     protected boolean isVerify(String jwtToken) {
         try {
             JWTVerifier verifier = JWT.require(algorithm).build();

@@ -8,6 +8,7 @@ import com.chatgpt.data.domain.weixin.service.IWeiXinBehaviorService;
 import com.chatgpt.data.types.exception.ChatGLMException;
 import com.chatgpt.data.types.weixin.XmlUtil;
 import com.google.common.cache.Cache;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,10 +17,10 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 /**
- * @author Fuzhengwei bugstack.cn @小傅哥
  * @description 受理用户行为接口实现类
  * @create 2023-08-05 17:04
  */
+@Slf4j
 @Service
 public class WeiXinBehaviorService implements IWeiXinBehaviorService {
 
@@ -35,6 +36,7 @@ public class WeiXinBehaviorService implements IWeiXinBehaviorService {
      */
     @Override
     public String acceptUserBehavior(UserBehaviorMessageEntity userBehaviorMessageEntity) {
+        log.info("微信用户行为：{}", userBehaviorMessageEntity);
         // Event 事件类型，忽略处理
         if (MsgTypeVO.EVENT.getCode().equals(userBehaviorMessageEntity.getMsgType())) {
             return "";
