@@ -24,8 +24,8 @@ import java.util.UUID;
 @Slf4j
 public abstract class AbstractAuthService implements IAuthService {
     private static final String defaultBase64EncodedSecretKey = "B*B^D%fe";
-    private final String base64EncodeSecretKey = Base64.encodeBase64String(defaultBase64EncodedSecretKey.getBytes());
-    private final Algorithm algorithm = Algorithm.HMAC256(Base64.decodeBase64(base64EncodeSecretKey));
+    private final String base64EncodedSecretKey = Base64.encodeBase64String(defaultBase64EncodedSecretKey.getBytes());
+    private final Algorithm algorithm = Algorithm.HMAC256(Base64.decodeBase64(base64EncodedSecretKey));
 
     @Override
     public AuthStateEntity doLogin(String code) {
@@ -85,7 +85,7 @@ public abstract class AbstractAuthService implements IAuthService {
                 // 签发人（一般都是username或者userId）
                 .setSubject(issuer)
                 // 生成jwt使用的算法和秘钥
-                .signWith(SignatureAlgorithm.HS256, base64EncodeSecretKey);
+                .signWith(SignatureAlgorithm.HS256, base64EncodedSecretKey);
         if (ttlMillis >= 0) {
             long expMillis = nowMillis + ttlMillis;
             Date exp = new Date(expMillis);
@@ -101,7 +101,7 @@ public abstract class AbstractAuthService implements IAuthService {
         // 得到 DefaJwtParser
         return Jwts.parser()
                 // 设置签名的密钥
-                .setSigningKey(base64EncodeSecretKey)
+                .setSigningKey(base64EncodedSecretKey)
                 .parseClaimsJws(jwtToken)
                 .getBody();
     }

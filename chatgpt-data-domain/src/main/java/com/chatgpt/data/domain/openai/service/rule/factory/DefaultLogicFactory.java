@@ -1,6 +1,7 @@
 package com.chatgpt.data.domain.openai.service.rule.factory;
 
 import com.chatgpt.data.domain.openai.model.annotation.LogicStrategy;
+import com.chatgpt.data.domain.openai.model.entity.UserAccountQuotaEntity;
 import com.chatgpt.data.domain.openai.service.rule.ILogicFilter;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Service;
@@ -15,9 +16,9 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Service
 public class DefaultLogicFactory {
-    public Map<String, ILogicFilter> logicFilterMap = new ConcurrentHashMap<>();
+    public Map<String, ILogicFilter<UserAccountQuotaEntity>> logicFilterMap = new ConcurrentHashMap<>();
 
-    public DefaultLogicFactory(List<ILogicFilter> logicFilters) {
+    public DefaultLogicFactory(List<ILogicFilter<UserAccountQuotaEntity>> logicFilters) {
         logicFilters.forEach(logic -> {
             LogicStrategy strategy = AnnotationUtils.findAnnotation(logic.getClass(), LogicStrategy.class);
             if (null != strategy) {
@@ -26,13 +27,20 @@ public class DefaultLogicFactory {
         });
     }
 
-    public Map<String, ILogicFilter> openLogicFilter() {
+    public Map<String, ILogicFilter<UserAccountQuotaEntity>> openLogicFilter() {
         return logicFilterMap;
     }
 
+    /**
+     * 规则逻辑枚举
+     */
     public enum LogicModelEnum {
+        NULL("NULL", "放行不用过滤"),
         ACCESS_LIMIT("ACCESS_LIMIT", "访问次数过滤"),
         SENSITIVE_WORD("SENSITIVE_WORD", "敏感词过滤"),
+        USER_QUOTA("USER_QUOTA", "用户额度过滤"),
+        MODEL_TYPE("MODEL_TYPE", "模型可用范围过滤"),
+        ACCOUNT_STATUS("ACCOUNT_STATUS", "账号状态过滤"),
         ;
 
 

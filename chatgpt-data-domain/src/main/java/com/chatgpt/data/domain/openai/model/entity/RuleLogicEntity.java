@@ -1,6 +1,6 @@
 package com.chatgpt.data.domain.openai.model.entity;
 
-import com.chatgpt.data.domain.openai.model.valobj.LogicCheckTypeVo;
+import com.chatgpt.data.domain.openai.model.valobj.LogicCheckTypeVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class RuleLogicEntity<T> {
-    private LogicCheckTypeVo type;
+    private LogicCheckTypeVO type;
     private String info;
     private T data;
 

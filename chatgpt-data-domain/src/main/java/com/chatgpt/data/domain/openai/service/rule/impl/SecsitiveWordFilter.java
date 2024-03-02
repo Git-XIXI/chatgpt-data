@@ -4,7 +4,8 @@ import com.chatgpt.data.domain.openai.model.aggregates.ChatProcessAggregate;
 import com.chatgpt.data.domain.openai.model.annotation.LogicStrategy;
 import com.chatgpt.data.domain.openai.model.entity.MessageEntity;
 import com.chatgpt.data.domain.openai.model.entity.RuleLogicEntity;
-import com.chatgpt.data.domain.openai.model.valobj.LogicCheckTypeVo;
+import com.chatgpt.data.domain.openai.model.entity.UserAccountQuotaEntity;
+import com.chatgpt.data.domain.openai.model.valobj.LogicCheckTypeVO;
 import com.chatgpt.data.domain.openai.service.rule.ILogicFilter;
 import com.chatgpt.data.domain.openai.service.rule.factory.DefaultLogicFactory;
 import com.github.houbb.sensitive.word.bs.SensitiveWordBs;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 @LogicStrategy(logicModel = DefaultLogicFactory.LogicModelEnum.SENSITIVE_WORD)
-public class SecsitiveWordFilter implements ILogicFilter {
+public class SecsitiveWordFilter implements ILogicFilter<UserAccountQuotaEntity> {
     @Resource
     private SensitiveWordBs words;
 
@@ -31,11 +32,12 @@ public class SecsitiveWordFilter implements ILogicFilter {
     private String whiteListStr;
 
     @Override
-    public RuleLogicEntity<ChatProcessAggregate> filter(ChatProcessAggregate chatProcessAggregate) {
+    public RuleLogicEntity<ChatProcessAggregate> filter(ChatProcessAggregate chatProcessAggregate, UserAccountQuotaEntity data) {
+        log.info("开始执行敏感词过滤；openId：{}", chatProcessAggregate.getOpenId());
         // 白名单用户不做敏感词处理
         if (chatProcessAggregate.isWhiteList(whiteListStr)) {
             return RuleLogicEntity.<ChatProcessAggregate>builder()
-                    .type(LogicCheckTypeVo.SUCCESS).data(chatProcessAggregate).build();
+                    .type(LogicCheckTypeVO.SUCCESS).data(chatProcessAggregate).build();
         }
 
         ChatProcessAggregate newChatProcessAggregate = new ChatProcessAggregate();
@@ -55,7 +57,7 @@ public class SecsitiveWordFilter implements ILogicFilter {
                 }).collect(Collectors.toList());
         newChatProcessAggregate.setMessages(newMessages);
         return RuleLogicEntity.<ChatProcessAggregate>builder()
-                .type(LogicCheckTypeVo.SUCCESS)
+                .type(LogicCheckTypeVO.SUCCESS)
                 .data(newChatProcessAggregate)
                 .build();
     }

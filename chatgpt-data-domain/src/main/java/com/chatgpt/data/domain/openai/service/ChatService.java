@@ -6,7 +6,8 @@ import cn.bugstack.chatglm.session.OpenAiSession;
 import com.alibaba.fastjson.JSON;
 import com.chatgpt.data.domain.openai.model.aggregates.ChatProcessAggregate;
 import com.chatgpt.data.domain.openai.model.entity.RuleLogicEntity;
-import com.chatgpt.data.domain.openai.model.valobj.LogicCheckTypeVo;
+import com.chatgpt.data.domain.openai.model.entity.UserAccountQuotaEntity;
+import com.chatgpt.data.domain.openai.model.valobj.LogicCheckTypeVO;
 import com.chatgpt.data.domain.openai.service.rule.ILogicFilter;
 import com.chatgpt.data.domain.openai.service.rule.factory.DefaultLogicFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -39,16 +40,17 @@ public class ChatService extends AbstractChatService {
     private OpenAiSession openAiSession;
 
     @Override
-    protected RuleLogicEntity<ChatProcessAggregate> doCheckLogic(ChatProcessAggregate chatProcessAggregate, String... logics) throws ExecutionException {
-        Map<String, ILogicFilter> logicFilterMap = logicFactory.openLogicFilter();
+    protected RuleLogicEntity<ChatProcessAggregate> doCheckLogic(ChatProcessAggregate chatProcessAggregate, UserAccountQuotaEntity userAccountQuotaEntity, String... logics) throws ExecutionException {
+        Map<String, ILogicFilter<UserAccountQuotaEntity>> logicFilterMap = logicFactory.openLogicFilter();
         RuleLogicEntity<ChatProcessAggregate> entity = null;
         for (String code : logics) {
-            entity = logicFilterMap.get(code).filter(chatProcessAggregate);
-            if (LogicCheckTypeVo.REFUSE.equals(entity.getType())) return entity;
+            if (DefaultLogicFactory.LogicModelEnum.NULL.getCode().equals(code)) continue;
+            entity = logicFilterMap.get(code).filter(chatProcessAggregate, userAccountQuotaEntity);
+            if (LogicCheckTypeVO.REFUSE.equals(entity.getType())) return entity;
         }
         return entity != null ? entity :
                 RuleLogicEntity.<ChatProcessAggregate>builder()
-                .type(LogicCheckTypeVo.SUCCESS)
+                        .type(LogicCheckTypeVO.SUCCESS)
                 .data(chatProcessAggregate)
                 .build();
     }

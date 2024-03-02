@@ -25,6 +25,9 @@ public class SensitiveWordConfig {
                  */
                 .wordReplace((stringBuilder, chars, wordResult, iWordContext) -> {
                     String sensitiveWord = InnerWordCharUtils.getString(chars, wordResult);
+                    if (sensitiveWord.isEmpty()) {
+                        log.info("未检测到敏感词");
+                    }
                     log.info("检测到敏感词：{}", sensitiveWord);
                 })
                 .ignoreCase(true)
