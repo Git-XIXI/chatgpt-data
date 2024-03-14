@@ -1,0 +1,65 @@
+server:
+  port: 8083
+  # 1核2G内存，线程数经验值200；4核8G内存【accept-count=1000、max-threads=800、max-connections=10000】，线程数经验值800。线程池过大，cpu调度会消耗大量时间
+  tomcat:
+    mbeanregistry:
+      enabled: true
+    max-connections: 100
+    threads:
+      max: 100        # 设定处理客户请求的线程的最大数目，决定了服务器可以同时响应客户请求的数,默认200
+      min-spare: 50   # 初始化线程数,最小空闲线程数,默认是10
+    accept-count: 10  # 等待队列长度
+
+# 应用配置
+app:
+  config:
+    # 跨域，开发阶段可以设置为 * 不限制
+    cross-origin: '*'
+    # 访问频次限制
+    limit-count: 10
+    # 白名单，不做频次拦截【微信的openai】oxfA9w8-23yvwTmo2ombz0E4zJv4
+    white-list: oEaoa6kLreTUaI7vGSDoLGu8H9qw
+
+# 数据库配置；SpringBoot 默认连接池为 HikariDataSource
+spring:
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/chatgpt_database?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  hikari:
+    pool-name: Retail_HikariCP
+    minimum-idle: 15 #最小空闲连接数量
+    idle-timeout: 180000 #空闲连接存活最大时间，默认600000（10分钟）
+    maximum-pool-size: 25 #连接池最大连接数，默认是10
+    auto-commit: true  #此属性控制从池返回的连接的默认自动提交行为,默认值：true
+    max-lifetime: 1800000 #此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
+    connection-timeout: 30000 #数据库连接超时时间,默认30秒，即30000
+    connection-test-query: SELECT 1
+  type: com.zaxxer.hikari.HikariDataSource
+
+mybatis:
+  # 打包出来的 target 路径
+  mapper-locations: classpath:/mybatis/mapper/*.xml
+  config-location:  classpath:/mybatis/config/mybatis-config.xml
+
+# 微信公众号配置信息
+# originalid：原始ID
+# appid：个人AppID
+# token：开通接口服务自定义设置
+wx:
+  config:
+    originalid: gh_d2218bf190e7
+    appid: wx075b27b863cf8caa
+    token: cjcxixi
+
+# ChatGLM SDK Config
+chatglm:
+  sdk:
+    config:
+      # 状态；true = 开启、false 关闭
+      enabled: true
+      # 官网地址
+      api-host: https://open.bigmodel.cn/
+      # 官网申请 https://open.bigmodel.cn/usercenter/apikeys
+      api-secret-key: 02e6069e17a6d74784a626e7691d92cf.95jVHeBdc3k591e9
