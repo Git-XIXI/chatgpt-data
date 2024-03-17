@@ -44,6 +44,24 @@ wx:
     appid: wx075b27b863cf8caa
     token: cjcxixi
 
+# 支付配置；如果申请了支付渠道，则可以配置 enable = true，否则就配置 false 走流程测试
+wxpay:
+  config:
+    # 状态；true = 开启、false 关闭
+    enabled: false
+    # 申请支付主体的 appid
+    appid:
+    # 商户号
+    mchid:
+    # 回调地址
+    notify-url: http://地址.natapp1.cc/api/v1/mall/pay_notify
+    # 商户API私钥路径
+    private-key-path: cert/apiclient_key.pem
+    # 商户证书序列号：openssl x509 -in apiclient_cert.pem -noout -serial
+    merchant-serial-number:
+    # 商户APIV3密钥
+    api-v3-key:
+
 # ChatGLM SDK Config
 chatglm:
   sdk:
