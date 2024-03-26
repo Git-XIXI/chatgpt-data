@@ -1,4 +1,4 @@
-package com.chatgpt.data.domain.order.model.service;
+package com.chatgpt.data.domain.order.service;
 
 import com.chatgpt.data.domain.order.model.aggregates.CreateOrderAggregate;
 import com.chatgpt.data.domain.order.model.entity.PayOrderEntity;

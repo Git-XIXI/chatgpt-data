@@ -12,7 +12,6 @@
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
     </resultMap>
-
     <select id="queryUserAccount" parameterType="java.lang.String" resultMap="userAccountMap">
         SELECT openid, total_quota, surplus_quota, model_types, status
         FROM user_account
@@ -27,4 +26,15 @@
           AND status = 0
     </update>
 
+    <insert id="addAccountQuota" parameterType="com.chatgpt.data.infrastructure.po.UserAccountPO">
+        update user_account
+        set total_quota = total_quota + #{totalQuota},
+            surplus_quota = surplus_quota + #{surplusQuota},
+            update_time = now()
+        where openid = #{openId}
+    </insert>
+    <insert id="insert" parameterType="com.chatgpt.data.infrastructure.po.UserAccountPO">
+        insert into user_account(openid, total_quota, surplus_quota, model_types, status, create_time, update_time)
+            value (#{openId}, #{totalQuota}, #{surplusQuota}, #{modelTypes}, #{status}, now(), now())
+    </insert>
 </mapper>

@@ -28,7 +28,7 @@ public class ProductEntity {
     /**
      * 商品描述
      */
-    private String priductDesc;
+    private String productDesc;
     /**
      * 额度次数
      */
@@ -41,5 +41,8 @@ public class ProductEntity {
      * 商品状态；0-无效、1-有效
      */
     private OpenAIProductEnableModel enable;
+    public boolean isAvailable() {
+        return OpenAIProductEnableModel.OPEN.equals(enable);
+    }
 
 }

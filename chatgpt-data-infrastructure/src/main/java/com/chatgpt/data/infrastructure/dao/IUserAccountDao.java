@@ -8,4 +8,8 @@ public interface IUserAccountDao {
     int subAccountQuota(String openId);
 
     UserAccountPO queryUserAccount(String openId);
+
+    void insert(UserAccountPO userAccountPO);
+
+    int addAccountQuota(UserAccountPO userAccountPO);
 }
