@@ -1,6 +1,5 @@
 package com.chatgpt.data.domain.order.service;
 
-import com.chatgpt.data.domain.order.model.aggregates.CreateOrderAggregate;
 import com.chatgpt.data.domain.order.model.entity.*;
 import com.chatgpt.data.domain.order.model.valobj.PayStatusVO;
 import com.chatgpt.data.domain.order.repository.IOrderRepository;
@@ -10,8 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
 
 /**
  * @description: 抽象订单服务
@@ -71,44 +68,4 @@ public abstract class AbstractOrderService implements IOrderService {
     protected abstract OrderEntity doSaveOrder(String openId, ProductEntity productEntity);
 
     protected abstract PayOrderEntity doPrepayOrder(String openId, String orderId, String productName, BigDecimal amountTotal);
-
-    @Override
-    public boolean changeOrderPaySuccess(String orderId, String transactionId, BigDecimal totalAmount, Date payTime) {
-        return false;
-    }
-
-    @Override
-    public CreateOrderAggregate queryOrder(String orderId) {
-        return null;
-    }
-
-    @Override
-    public void deliverGoods(String orderId) {
-
-    }
-
-    @Override
-    public List<String> queryReplenishmentOrder() {
-        return null;
-    }
-
-    @Override
-    public List<String> queryNoPayNotifyOrder() {
-        return null;
-    }
-
-    @Override
-    public List<String> queryTimeoutCloseOrderList() {
-        return null;
-    }
-
-    @Override
-    public boolean changeOrderClose(String orderId) {
-        return false;
-    }
-
-    @Override
-    public List<ProductEntity> queryProductList() {
-        return null;
-    }
 }

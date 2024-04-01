@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @description: 订单服务
@@ -87,5 +88,45 @@ public class OrderService extends AbstractOrderService {
         // 更新订单支付信息
         orderRepository.updateOrderPayInfo(payOrderEntity);
         return payOrderEntity;
+    }
+
+    @Override
+    public boolean changeOrderPaySuccess(String orderId, String transactionId, BigDecimal totalAmount, Date payTime) {
+        return false;
+    }
+
+    @Override
+    public CreateOrderAggregate queryOrder(String orderId) {
+        return null;
+    }
+
+    @Override
+    public void deliverGoods(String orderId) {
+
+    }
+
+    @Override
+    public List<String> queryReplenishmentOrder() {
+        return orderRepository.queryReplenishmentOrder();
+    }
+
+    @Override
+    public List<String> queryNoPayNotifyOrder() {
+        return orderRepository.queryNoPayNotifyOrder();
+    }
+
+    @Override
+    public List<String> queryTimeoutCloseOrderList() {
+        return orderRepository.queryTimeoutCloseOrderList();
+    }
+
+    @Override
+    public boolean changeOrderClose(String orderId) {
+        return orderRepository. changeOrderClose(orderId);
+    }
+
+    @Override
+    public List<ProductEntity> queryProductList() {
+        return orderRepository.queryProductList();
     }
 }
